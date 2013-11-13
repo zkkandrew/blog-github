@@ -1,9 +1,8 @@
 ---
 layout: default
-title: 我的Blog
+title: 说清楚
 ---
 <h2>{{ page.title }}</h2>
-<p> 还在建设中……</p>
 <ul>
 　　{% for post in site.posts %}
 　　　　<li>{{ post.date | date_to_string }} <a href="{{ post.url }}">{{ post.title }}</a></li>
