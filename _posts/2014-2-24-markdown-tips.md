@@ -1,6 +1,4 @@
-<html>
-<head></head>
-<body>
+-->
 # 学习Markdown的几点
 ## 语法说明
 - 符号——含义
@@ -11,7 +9,4 @@
 *斜体的字在这里*
 [这是链接](http://zhangkangkang.com.cn)
 ![这是图片](http://zhangkangkang.com.cn/fanvico.ico)
-
-
-</body>
-</html>
+<--
