@@ -334,10 +334,12 @@ logstart</p>
 
 
     <span class="n">stats</span><span class="o">.</span><span class="n">normaltest</span><span class="p">()</span>
+    <p>stats.normaltest(list) # list 包含全部分组的数据</p>
     <span class="c"># 默认假设是符合正态分布的</span>
     <span class="c"># P&gt;0.05 ：符合正态分布</span>
 
     <span class="n">stats</span><span class="o">.</span><span class="n">levene</span><span class="p">()</span> 
+    <p>stats.levene(list1, list2...) # 每个list属于一个分组</p>
     <span class="c"># 默认齐次，即该检测方法假设数据是齐次的</span>
     <span class="c"># P&gt;0.05 ：方差齐次，可以使用ANOVA，否则使用非参数检验方法（但是在SPSS里面，方差不齐也可以使用ANOVA，但要选择方差不齐的分析方法如Tamhane&#39;s T2等等）</span>
 
