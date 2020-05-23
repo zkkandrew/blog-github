@@ -8,12 +8,12 @@
 */
 
 body {
-	font-size:   13pt;
+	font-size:   16pt;
 	color:       #222;
 	background:  #fbfbfb;
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 	line-height: 1.4;
-	margin:      10%;
+	margin:      10% auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
