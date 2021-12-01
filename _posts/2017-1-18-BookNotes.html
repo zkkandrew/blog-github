@@ -76,6 +76,8 @@ logstart</p>
     <span class="n">origin_data</span> <span class="o">=</span> <span class="n">origin_data</span><span class="o">.</span><span class="n">ix</span><span class="p">[:,</span> <span class="p">[</span><span class="s">&#39;ear&#39;</span><span class="p">,</span> <span class="s">&#39;ear5&#39;</span><span class="p">,</span> <span class="s">&#39;ear10&#39;</span><span class="p">,</span> <span class="s">&#39;ear15&#39;</span><span class="p">,</span> <span class="s">&#39;ear20&#39;</span><span class="p">,</span> <span class="s">&#39;echo&#39;</span><span class="p">,</span> <span class="s">&#39;turn&#39;</span><span class="p">,</span> <span class="s">&#39;turn5&#39;</span><span class="p">,</span> <span class="s">&#39;turn10&#39;</span><span class="p">,</span> <span class="s">&#39;turn15&#39;</span><span class="p">]]</span>
     <span class="c">#选择特定的行</span>
     <span class="c">indi_syl_df[indi_syl_df['emitter']=='L']['number']</span>
+    <span class="c">#选择特定的行，多个条件选择</span>
+    <span class="c">tran_df_transition = tran_df.loc[(tran_df['population'] == pl) & (tran_df['level'] == level)]['transition']</span>
 
     <span class="c">#插入新列</span>
     <span class="n">df</span><span class="p">[</span><span class="s">&#39;new&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
