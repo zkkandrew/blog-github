@@ -86,8 +86,11 @@ logstart</p>
     <span class="n">data_origin_between</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s">&#39;echo_ln&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="c">#列</span>
     <span class="n">data_origin_between</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s">&#39;echo10_ln&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="c">#行</span>
 </pre></div>
-
-
+<p>删除行或列</p>
+div class="codehilite"><pre>    <span class="n">seq_all_df.drop(seq_all_df.index[ind], inplace=True)</span>
+   
+</pre></div>
+        
 <p>5 创建空值</p>
 <div class="codehilite"><pre>    <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c">#不跳过空值，默认跳过</span>
@@ -119,6 +122,7 @@ logstart</p>
 <p>9 使用已有的列作为索引</p>
 <div class="codehilite"><pre>    <span class="n">frame</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">],</span> <span class="n">drop</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c">#多个列也可以 #原有的列也可以不删除</span>
     <span class="n">frame</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c">#功能相反，将索引变成列</span>
+    <span class="n">seq_all_df.reset_index(drop=True)</span><span class="c">#重设索引，并丢掉原来的索引</span>
 </pre></div>
 
 
