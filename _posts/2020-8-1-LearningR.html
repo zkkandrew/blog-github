@@ -1,0 +1,314 @@
+---
+layout: page
+title: LearningR
+---
+<h2>{{ page.title }}</h2>
+<p>{{ page.date | date_to_string }}</p>
+
+<h1>R Studio</h1>
+
+<pre><code class="code-highlighted code- R">import dataset with RStudio
+
+parameters_for_analysis_agg &lt;- read_excel(&quot;C:/zkk/repetition2/parameters for analysis.xlsx&quot;, sheet = &quot;Agg NT-T&quot;) //读取Excel文件及特定Sheet
+
+agg_d_seq &lt;- parameters_for_analysis_agg[&quot;d_seq&quot;] //选出特定名字的列
+parameters_for_analysis_agg$d_seq //使用列中的数值
+ntt_fundamental_max &lt;- ntt_nbsfm[c(&quot;fundamental_max&quot;, &quot;category&quot;)]//选出多个列
+
+th_sfm$category &lt;- as.integer(2) //插入新列并赋值
+new_frame = cbind(data1, data2[&#39;bat&#39;]) //将右边的列插入左边的dataframe
+colnames(ntt_nbsfm)[16] = &#39;bandw_max&#39; //改变列名
+colnames(ntt_sfm)[c(11, 12, 13, 14, 15, 16, 17, 18, 19, 20)] = c(&#39;peak_freq_max&#39;, &#39;peak_amp_max&#39;, &#39;fundamental_max&#39;, &#39;min_freq_max&#39;, &#39;max_freq_max&#39;, &#39;bandw_max&#39;, &#39;quart_25_max&#39;, &#39;quart_50_max&#39;, &#39;quart_75_max&#39;, &#39;entropy_max&#39;)
+
+agg_sfm &lt;- subset(parameters_for_analysis_agg, syl==&quot;SFM&quot;) //选出特定值的行
+data_during &lt;- playback2017data[playback2017data$partition == &#39;during&#39;]//选出特定值的行2
+data3 &lt;- rbind(ntt_fundamental_max_del_zero, data.frame(fundamental_max=30200, category=2)) //插入新行
+
+改变某一个值
+data_during[1,3] = 100
+
+install.packages(dplyr)
+library(dplyr)
+data2 = filter(data1, IP_CR_RSK_RTG_ID !=&#39;22140023&#39;)//选出特定值的行
+
+
+y &lt;- x[!is.na(x)]//选出非缺失值
+ts[is.na(ts)]&lt;-0    #将缺失值替换为0
+Individual_consistency[Individual_consistency %in% 1] &lt;- NA 将等于1的值替换为空值
+
+改变特定行的值
+th_del$group[th_del$emitter_agg == &#39;L&#39;] &lt;- 1
+
+使用sql查询data.frame
+install.packages(&#39;sqldf&#39;)
+result &lt;- sqldf(&quot;select * from dataSet where size=&#39;aaa&#39; &quot;)</code></pre>
+
+<p>leveneTest(y, group)</p>
+
+<p>y是你想检测homogeneity of variance 的所有数据， group给的是这些变量的分组信息，所以后面一个变量会被当做factor处理</p>
+
+<pre><code class="code-highlighted code- R">leveneTest(d_seq ~ as.factor(category), data=ntt_nbsfm)
+//显著差异说明方差不齐次
+
+for(i in 1:length(col_name)){ print(col_name[i]); new_frame &lt;- ntt_sfm[c(col_name[i], &quot;category&quot;)]; colnames(new_frame)[1] = &quot;variable&quot;; result &lt;- leveneTest(variable~as.factor(category), data=new_frame); print(result$F); print(result$Pr); }
+
+for(i in 1:length(personality_col)){
+  print(personality_col[i]);
+  new_frame &lt;- data[c(personality_col[i], &quot;bat&quot;)];
+  colnames(new_frame)[1] = &quot;variable&quot;;
+  result &lt;- leveneTest(variable~bat, data=new_frame);
+  print(result$F);
+  print(result$Pr);
+}
+
+shapiro.test(ntt_nbsfm$d_seq)// 判断是否正态分布
+//显著差异说明不正态
+//数据中的0值会转换后出现NaN值,导致无法再检测正态与否
+
+wilcox.test(subset(ntt_nbsfm, category==1)$d_seq, subset(ntt_nbsfm, category==2)$d_seq, exact = FALSE, correct = FALSE)//比较两组不正态的数据是否显著差异
+
+//数据不正态分布而且超过两组数据的时候用kruskal.test(syl_num~category, data=data_frame)
+
+length(ntt_nbsfm) //返回列数
+ncol() //返回列数
+nrow() //返回行数</code></pre>
+
+<p>formatR package</p>
+
+<p>列索引从1开始</p>
+
+<pre><code class="code-highlighted code- R">for(i in 1:length(ntt_nbsfm)){
+    print(colnames(ntt_nbsfm)[i])
+    if(colnames(ntt_nbsfm) !== &#39;date&#39; &amp;&amp; colnames(ntt_nbsfm) !== &#39;file&#39; &amp;&amp; colnames(ntt_nbsfm) !== &#39;syl&#39;){
+    	leveneTest(colnames(ntt_nbsfm)[i]~as.factor(category), data=ntt_nbsfm)
+  	}
+}
+for(i in 1:length(col_name)){ print(col_name[i]); new_frame &lt;- data.frame();new_frame &lt;- ntt_sfm[c(col_name[i], &quot;category&quot;)]; colnames(new_frame)[1] = &quot;variable&quot;; result &lt;- leveneTest(variable~as.factor(category), data=new_frame); print(paste(result$F)); #print(paste(&#39;Pr: &#39;, result$Pr)); }
+
+list(d_second, fundamental, energy, peak_freq_max, peak_amp_max, fundamental_max, min_freq_max, max_freq_max, bandw_max, quart_25_max, quart_50_max, quart_75_max, entropy_max, interval, category)
+
+bnbl2_col_name &lt;- c(&quot;d_seq&quot;, &quot;d_first&quot;,&quot;num_sub&quot;, &quot;fundamental&quot;, &quot;energy&quot;, &quot;peak_freq_max&quot;, &quot;peak_ampl_max&quot;, &quot;fundamental_max&quot;, &quot;min_freq_max&quot;, &quot;max_freq_max&quot;, &quot;bandw_max&quot;, &quot;quart_25_max&quot;, &quot;quart_50_max&quot;, &quot;quart_75_max&quot;, &quot;entropy_max&quot;, &quot;interval&quot;);
+nbsfm2_col_name &lt;- c(&quot;d_second&quot;, &quot;d_nb&quot;, &quot;num_sub&quot;, &quot;fundamental&quot;, &quot;energy&quot;, &quot;peak_freq_max&quot;, &quot;peak_ampl_max&quot;, &quot;fundamental_max&quot;, &quot;min_freq_max&quot;, &quot;max_freq_max&quot;, &quot;bandw_max&quot;, &quot;quart_25_max&quot;, &quot;quart_50_max&quot;, &quot;quart_75_max&quot;, &quot;entropy_max&quot;)</code></pre>
+
+<h2>leveneTest()</h2>
+
+<p>library(car)</p>
+
+<p>for(i in 1:length(nbsfm2_col_name)){ print(nbsfm2_col_name[i]); new_frame &lt;- nnt2_nbsfm[c(nbsfm2_col_name[i], &quot;category&quot;)]; colnames(new_frame)[1] = &quot;variable&quot;; result &lt;- leveneTest(variable~as.factor(category), data=new_frame); print(result$F); print(result$Pr); }</p>
+
+<h2>shapiro.test()</h2>
+
+<p>for(i in 1:length(nbsfm2_col_name)){ print(nbsfm2_col_name[i]); new_frame &lt;- data.frame();new_frame &lt;- nnt2_nbsfm[c(nbsfm2_col_name[i], &quot;category&quot;)]; colnames(new_frame)[1] = &quot;variable&quot;; result &lt;- shapiro.test(new_frame$variable); print(result$statistic); print(result$p.value) }</p>
+
+<h2>wilcox.test()</h2>
+
+<p>for(i in 1:length(nbsfm2_col_name)){ print(nbsfm2_col_name[i]); new_frame &lt;- data.frame();new_frame &lt;- nnt2_nbsfm[c(nbsfm2_col_name[i], &quot;category&quot;)]; colnames(new_frame)[1] = &quot;variable&quot;; result &lt;- wilcox.test(subset(new_frame, category==1)$variable, subset(new_frame, category==2)$variable, exact = FALSE, correct = FALSE); print(result$statistic); print(result$p.value) }</p>
+
+<h2>aov()</h2>
+
+<p>for(i in 1:length(nbsfm2_col_name)){ print(nbsfm2_col_name[i]); new_frame &lt;- data.frame();new_frame &lt;- nnt2_nbsfm[c(nbsfm2_col_name[i], &quot;category&quot;)]; colnames(new_frame)[1] = &quot;variable&quot;; result &lt;- aov(variable~as.factor(category), data=new_frame); print(summary(result)) }</p>
+
+<h2>ggplot2</h2>
+
+<p>geom: geometric object 几何属性, 包括点 线 条形</p>
+
+<p>aes: aesthetic attributes 图形属性, 包括颜色 形状 大小 scale</p>
+
+<p>stats: statistical transformation 统计变换</p>
+
+<p>coord: coordinate system 坐标系</p>
+
+<p>facet: facet 分面, 指将绘图窗口划分为若干个子窗口</p>
+
+<h3>qplot()</h3>
+
+<blockquote>
+<p>quick plot 快速作图</p>
+</blockquote>
+
+<pre><code class="code-highlighted code- R">默认是散点图
+qplot(x, y, data = dataSet, colour=column_name, shape=column_name, alpha=I(1/10), geom=&quot;smooth|boxplot|path|line|histogram|freqpoly|density|bar|jitter&quot;)
+//散点图中点的颜色和形状,透明度为原来的1/10
+
+size: 调节线条粗细
+geom=c(&quot;boxplot&quot;, &quot;smooth&quot;)//可以组合使用</code></pre>
+
+<h3>ggplot()</h3>
+
+<pre><code class="code-highlighted code- R">library(ggplot2)
+// 去除灰色背景、网格线、图例、刻度
++theme_bw()+theme(
+	panel.grid.major = element_line(colour = NA),
+	panel.grid.minor = element_line(colour = NA),
+	legend.position = &#39;none&#39;,
+	axis.text.x = element_blank()
+)
+//去除刻度线
+p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
+
+//默认的两个颜色
+&quot;#669933&quot;, &quot;#FFCC66&quot;
+
+//两组柱状图
+ggplot(syllable, aes(fill=Context, Syllable_type, Percent)) + geom_bar(position = &#39;dodge&#39;, stat = &#39;identity&#39;)
+
+//按照fill=的字段分组
+ggplot(data_during_nbdfm_del_zero, aes(fill=behaviors, playback_file, number)) + geom_boxplot()
+
+//按照facet_grid()中的字段分面
+ggplot(data_during_nbdfm_del_zero, aes(fill=behaviors, playback_file, number)) + geom_boxplot() + facet_grid(. ~ behaviors)
+
+可以将数据取log值,纵坐标差距比较大的数据做出来的图更好看一些
+
+//将图竖起来 翻转90度
++coord_flip()
+
+// agg th potision
+&gt; position_data$syllable &lt;- with(position_data, reorder(syllable,number))
+
+&gt; ggplot(position_agg_th_8_nt)+geom_bar(aes(x=syllable, y=number/sum(number),fill=context),stat = &#39;identity&#39;)+facet_wrap(context~position)+theme(axis.text.x = element_text(angle = 90), legend.position=&#39;none&#39;)+labs(x=&#39;Syllable type&#39;, y=&#39;Percent&#39;)
+
+// agg th syllable
+&gt; ggplot(syl)+geom_bar(aes(x=Syllable_type, y=Percent, fill=Context), stat = &#39;identity&#39;,position = &#39;dodge&#39;)+scale_x_discrete(limits=c(&#39;SNU&#39;,&#39;SNSNS&#39;,&#39;NSNSND&#39;,&#39;SNSND&#39;,&#39;NSN&#39;, &#39;DFM&#39;,&#39;SN&#39;,&#39;AFM&#39;,&#39;BNBs&#39;,&#39;NB-UFM&#39;,&#39;UFM&#39;,&#39;NSNS&#39;,&#39;SNS&#39;,&#39;NSND&#39;,&#39;SND&#39;,&#39;BNBl&#39;,&#39;SFM&#39;,&#39;NB-DFM&#39;,&#39;NB-SFM&#39;))+labs(x=&#39;Syllable type&#39;)+theme(legend.position = c(.7,.9), axis.text.x = element_text(angle = 90))
+
+&gt; nt_syllable$syllable &lt;- with(nt_syllable, reorder(syllable,number))
+&gt; ggplot(nt_syllable)+geom_bar(aes(x=syllable, y=number, fill=context), stat = &#39;identity&#39;,position = &#39;dodge&#39;)+labs(x=&#39;Syllable type&#39;, y=&#39;Percent&#39;)+theme(legend.position = c(.7,.9), axis.text.x = element_text(angle = 90))</code></pre>
+
+<h3>判别分析 LDA</h3>
+
+<pre><code class="code-highlighted code- R"># 数据准备，使用R内置数据集iris
+# 通过抽样建立训练样本(70%)和测试样本(30%)
+&gt; index &lt;- sample(2,size = nrow(iris),replace = TRUE, prob = c(0.7,0.3))
+&gt; train_data &lt;- iris[index == 1,]
+&gt; test_data &lt;- iris[index == 2,]
+# 载入所用包
+&gt; library(MASS)
+# 构建Fisher判别模型
+&gt; fisher_model &lt;- lda(Species~., data = train_data)
+# 进行预测
+&gt; fisher_model_pre &lt;- predict(fisher_model, newdata = test_data[,1:4])
+# 生成实际与预判交叉表
+&gt; table(test_data$Species,fisher_model_pre$class)
+
+             setosa versicolor virginica
+  setosa         20          0         0
+  versicolor      0         14         1
+  virginica       0          0        18
+# 生成预判精度
+&gt; sum(diag(table(test_data$Species,fisher_model_pre$class)))
++ / sum(table(test_data$Species,fisher_model_pre$class))
+[1] 0.9811321
+
+agg_model &lt;- lda(emitter~., data=Individual_consistency, prior=c(1,1,1,1,1,1,1,1)/8)
+table(emitter, predict(agg_model)$class)
+
+#作图
+plot(agg_model)</code></pre>
+
+<p>ggplot(syllable[syllable$Context==&#39;Aggressive&#39;]) + aes(x=Syllable_type, y=Percent) + geom_bar(position = &#39;dodge&#39;, stat = &#39;identity&#39;) + ggplot()</p>
+
+<!-- ggplot(transform(noise_tonal, type=factor(type, levels = c('Syllable','Transition','Sequence'))))+geom_bar(aes(x=ratio, y=percent, fill=context), stat = 'identity', position = 'dodge')+facet_grid(.~type, scales = "free_x", space = "free_x") -->
+<p>my_pal = c(&quot;#EE0000FF&quot;, &quot;#008B45FF&quot;, &quot;#631879FF&quot;, &quot;#1B1919FF&quot;, &quot;#197EC0FF&quot;, &quot;#F05C3BFF&quot;, &quot;#E762D7FF&quot;, &quot;#82491EFF&quot;, &quot;#EFC000FF&quot;, &quot;#868686FF&quot;)</p>
+
+<p>my_pal = c(&quot;#FF0000FF&quot;, &quot;#FF9900FF&quot;, &quot;#FFCC00FF&quot;, &quot;#00FF00FF&quot;, &quot;#6699FFFF&quot;, &quot;#99991EFF&quot;, &quot;#9900CCFF&quot;, &quot;#FF00CCFF&quot;, &quot;#CCFFFFFF&quot;, &quot;#FFCCCCFF&quot;, &quot;#FFFF00FF&quot;, &quot;#CCFF00FF&quot;, &quot;#358000FF&quot;, &quot;#0000CCFF&quot;, &quot;#99CCFFFF&quot;, &quot;#00FFFFFF&quot;, &quot;#666600FF&quot;, &quot;#CC99FFFF&quot;, &quot;#666666FF&quot;, &quot;#79CC3DFF&quot;, &quot;#CCCC99FF&quot;, &quot;#5050FFFF&quot;, &quot;#CC33FFFF&quot;, &quot;#CCCCCCFF&quot;, &quot;#999999FF&quot;, &quot;#CC0000FF&quot;, &quot;#996600FF&quot;)</p>
+
+<p>my_pal[c(1, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25)]</p>
+
+<h3>27 colors line</h3>
+
+<pre><code>ggplot(position_data_agg_3d, aes(x=position_code, y=log(percent), fill=syllable, color=syllable))+geom_line(size=1)+theme_classic()+scale_color_manual(values=my_pal)
+
+ ggplot(agg_position_data, aes(x=position_code, y=number, fill=syllable, color=syllable)) +geom_line(size=1) +scale_color_manual(values=my_pal) + theme_classic() +geom_point() + scale_x_continuous(breaks=seq(1, 3, 1))
+
+ ggplot(distress_position_data, aes(x=position_code, y=number, fill=syllable, color=syllable)) +geom_line(size=1) +scale_color_manual(values=my_pal[c(1, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25)]) + theme_classic() +geom_point() + scale_x_continuous(breaks=seq(1, 4, 1)) + theme(legend.position = &#39;none&#39;)</code></pre>
+
+<h3>改变图例顺序</h3>
+
+<pre><code>ggplot(seq_type_data, aes(x=population, y=number, fill=type))+ geom_bar(stat=&#39;identity&#39;, position = &#39;fill&#39;) + scale_x_discrete(limits=c(&#39;BJ&#39;, &#39;LT&#39;, &#39;JA&#39;)) + scale_fill_manual(values = my_pal, labels=c(&#39;NT&#39;, &#39;T&#39;, &#39;N&#39;, &#39;N/NT&#39;, &#39;NT/T&#39;, &#39;NT/N&#39;, &#39;T/NT&#39;, &#39;N/T&#39;, &#39;T/NT/T&#39;, &#39;NT/T/NT&#39;, &#39;NT/N/NT&#39;, &#39;N/NT/T&#39;, &#39;T/NT/N/NT&#39;, &#39;N/NT/N/NT&#39;, &#39;NT/T/NT/T&#39;), breaks = c(&#39;NT&#39;, &#39;T&#39;, &#39;N&#39;, &#39;N/NT&#39;, &#39;NT/T&#39;, &#39;NT/N&#39;, &#39;T/NT&#39;, &#39;N/T&#39;, &#39;T/NT/T&#39;, &#39;NT/T/NT&#39;, &#39;NT/N/NT&#39;, &#39;N/NT/T&#39;, &#39;T/NT/N/NT&#39;, &#39;N/NT/N/NT&#39;, &#39;NT/T/NT/T&#39;))</code></pre>
+
+<h3>改变Y轴堆叠顺序</h3>
+
+<pre><code>seq_type_data$orderby = factor(seq_type_data$type, levels = c(&#39;NT&#39;, &#39;T&#39;, &#39;N&#39;, &#39;N/NT&#39;, &#39;NT/T&#39;, &#39;NT/N&#39;, &#39;T/NT&#39;, &#39;N/T&#39;, &#39;T/NT/T&#39;, &#39;NT/T/NT&#39;, &#39;NT/N/NT&#39;, &#39;N/NT/T&#39;, &#39;T/NT/N/NT&#39;, &#39;N/NT/N/NT&#39;, &#39;NT/T/NT/T&#39;))
+ggplot(seq_type_data, aes(x=population, y=number, fill=orderby))+ geom_bar(stat=&#39;identity&#39;, position = &#39;fill&#39;) + scale_x_discrete(limits=c(&#39;BJ&#39;, &#39;LT&#39;, &#39;JA&#39;)) + scale_fill_manual(values = my_pal)</code></pre>
+
+<h3>宽数据变长数据</h3>
+
+<p>library(reshape2)</p>
+
+<p>comm_fm_reshape &lt;- melt(comm_fm, id.vars = &quot;type&quot;, variable.name = &quot;parameter&quot;, value.name = &quot;count&quot;)</p>
+
+<p><a href="http://offline.nenu.edu.cn/DeleteOnline/DeleteServlet?device_name=%25E6%2588%2591%25E7%259A%2584%25E8%25AE%25BE%25E5%25A4%2587&amp;&amp;device_tmp=B0FC36192D55">http://offline.nenu.edu.cn/DeleteOnline/DeleteServlet?device_name=%25E6%2588%2591%25E7%259A%2584%25E8%25AE%25BE%25E5%25A4%2587&amp;&amp;device_tmp=B0FC36192D55</a></p>
+
+<p>ggplot(dati_echo_reshape, aes(x=type, y=count, color=type))+geom_boxplot()+facet_wrap(~parameter, scales=&quot;free_y&quot;, nrow = 1)+scale_color_manual(values=c(&quot;red&quot;, &quot;blue&quot;))+theme_bw()+theme(legend.position = &#39;none&#39;,axis.text.x = element_blank())</p>
+
+<h3>设置分面的排列顺序</h3>
+
+<p>dati_echo_lm$parameter &lt;- factor(dati_echo_lm$parameter, levels = c(&#39;duration&#39;, &#39;Fstart&#39;, &#39;Fend&#39;, &#39;peak_freq&#39;, &#39;min_freq&#39;, &#39;max_freq&#39;, &#39;bandw&#39;))</p>
+
+<blockquote>
+<p>ggplot(dati_echo_lm, aes(x=original, y=extracted))+geom_point(shape=1)+geom_smooth(method = lm)+facet_wrap(~parameter, scales = &quot;free&quot;, nrow = 1)+theme(axis.text.x = element_text(angle = 90))</p>
+</blockquote>
+
+<h3>MRPP分析 比较组内差异与组间差异</h3>
+
+<pre><code>library(&quot;vegan&quot;)
+taep_new_dist &lt;- vegdist(subset(subset(taep_new, select = -emitter), select=-population))
+m &lt;- monoMDS(taep_new_dist)
+View(m)
+plot(m$points)
+taep_new_mrpp &lt;- mrpp(taep_new_dist, grouping = taep_new$population, permutations = 999)
+View(taep_new_mrpp)
+taep_new_mrpp</code></pre>
+
+<p>Call:</p>
+
+<p>mrpp(dat = taep_new_dist, grouping = taep_new$population, permutations = 999) </p>
+
+<p>Dissimilarity index: bray </p>
+
+<p>Weights for groups: n </p>
+
+<p>Class means and counts:</p>
+
+<pre><code>   BJ     JA     LT  </code></pre>
+
+<p>delta 0.5067 0.5044 0.567</p>
+
+<p>n 11 8 12<br/></p>
+
+<p>Chance corrected within-group agreement A: 0.1201 </p>
+
+<p>Based on observed delta 0.5295 and expected delta 0.6017 </p>
+
+<p>Significance of delta: 0.001 </p>
+
+<p>Permutation: free</p>
+
+<p>Number of permutations: 999</p>
+
+<p>得到的结果中A值大于P值，即 0.1201&gt;0.001，表明组间差异大于组内差异</p>
+
+<h3>ANOSIM分析 比较组内差异与组间差异</h3>
+
+<pre><code>taep_new_anosim &lt;- anosim(taep_new_dist, taep_new$population, permutations = 999)
+taep_new_anosim</code></pre>
+
+<p>作图：plot(taep_new_anosim)</p>
+
+<p>Call:</p>
+
+<p>anosim(x = taep_new_dist, grouping = taep_new$population, permutations = 999) </p>
+
+<p>Dissimilarity: bray </p>
+
+<p>ANOSIM statistic R: 0.3146 </p>
+
+<pre><code>  Significance: 0.001 </code></pre>
+
+<p>Permutation: free</p>
+
+<p>Number of permutations: 999</p>
+
+<p>结果显示：R值大于P值，即 0.3146&gt;0.001，表明组间差异大于组内差异</p>
+
+
