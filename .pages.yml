@@ -1,8 +1,0 @@
-view:
-  fields: [ title ]
-  primary: title
-  sort: [ date, title ]
-  default:
-    search: ''
-    sort: title
-    order: desc
